@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onItemClickListener(int itemId) {
-        // Launch AddJournalEntry adding the itemId as an extra in the intent
+        // Launch AddJournalEntry to edit a Journal Entry passing the itemId as an extra in the intent
         Intent intent = new Intent(MainActivity.this, AddJournalEntry.class);
         intent.putExtra(AddJournalEntry.EXTRA_ENTRY_ID, itemId);
         Log.d("onItemClickListener","trying to start Journal");

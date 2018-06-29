@@ -75,6 +75,7 @@ public class AddJournalEntry extends AppCompatActivity {
      * initViews is called from onCreate to init the member variable views
      */
     private void initViews() {
+        mDateText = findViewById(R.id.textViewItemDate);
         mEditTitle = findViewById(R.id.editTextJournalTitle);
         mEditBody = findViewById(R.id.editTextJournalBody);
         mButton = findViewById(R.id.saveButton);

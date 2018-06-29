@@ -88,7 +88,7 @@ public class EntryAdapter extends RecyclerView.Adapter<EntryAdapter.EntryViewHol
     }
 
     // Inner class for creating ViewHolders
-    class EntryViewHolder extends RecyclerView.ViewHolder {
+    class EntryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         // Class variables for the journal entry date and title TextViews
         TextView entryDate;
@@ -101,8 +101,17 @@ public class EntryAdapter extends RecyclerView.Adapter<EntryAdapter.EntryViewHol
          */
         public EntryViewHolder(View itemView) {
             super(itemView);
+
             entryDate = itemView.findViewById(R.id.TextViewDate);
             entryTitle = itemView.findViewById(R.id.TextViewTitle);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int elementId = mJournalEntries.get(getAdapterPosition()).getId();
+            mItemClickListener.onItemClickListener(elementId);
         }
     }
 }
