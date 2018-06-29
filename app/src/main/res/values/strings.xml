@@ -1,0 +1,11 @@
+<resources>
+    <!-- App activity titles -->
+    <string name="app_name">Journal App</string>
+    <string name="add_entry_name">Add New Entry</string>
+    <!-- TextView Hint strings -->
+    <string name="edit_entry_title">Your Note Title</string>
+    <string name="edit_entry_body">Your note details here&#8230;</string>
+    <!-- Button Strings -->
+    <string name="save_button">Save</string>
+    <string name="update_button">Update</string>
+</resources>

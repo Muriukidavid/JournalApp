@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This vertical linear layout contains all the views in the AddTaskActivity code.
+    This includes an EditText to add a journal title, EditText to add a journal details
+    and a submit button
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingEnd="@dimen/activity_horizontal_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingStart="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin">
+
+    <TextView
+        android:id="@+id/textViewItemDate"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="start"
+        android:text="21st June, 2018"/>
+
+    <!-- EditText for getting task description input -->
+    <EditText
+        android:id="@+id/editTextJournalTitle"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.2"
+        android:hint="@string/edit_entry_title"
+        android:paddingBottom ="@dimen/activity_horizontal_margin"
+        android:inputType="textAutoComplete"/>
+    <EditText
+        android:id="@+id/editTextJournalBody"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        android:textAlignment="textStart"
+        android:hint="@string/edit_entry_body"
+        android:paddingBottom ="@dimen/activity_horizontal_margin"
+        android:inputType="textMultiLine"
+        android:minLines="6"/>
+
+    <!-- A save button -->
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:text="@string/save_button"
+        style="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@android:color/primary_text_dark"
+        android:background="@color/colorPrimary"/>
+
+</LinearLayout>
