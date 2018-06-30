@@ -1,13 +1,18 @@
 package ke.co.karibe.journalapp;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import ke.co.karibe.journalapp.database.JournalEntry;
 
@@ -35,8 +40,9 @@ public class EntryAdapter extends RecyclerView.Adapter<EntryAdapter.EntryViewHol
      *
      * @return A new TaskViewHolder that holds the view for each task
      */
+    @NonNull
     @Override
-    public EntryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public EntryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext)
                 .inflate(R.layout.entry_layout, parent,false);
 
@@ -48,19 +54,26 @@ public class EntryAdapter extends RecyclerView.Adapter<EntryAdapter.EntryViewHol
      * @param holder The ViewHolder to bind Cursor data to
      * @param position The position of the data in the Cursor
      */
+
     @Override
-    public void onBindViewHolder(EntryViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull EntryViewHolder holder, int position) {
         //The values for UI from data
         JournalEntry journalEntry = mJournalEntries.get(position);
 
         //get the values of data
-        int id = journalEntry.getId();
-        String date = journalEntry.getDate();
+        //int id = journalEntry.getId();
+        Date date = journalEntry.getDate();
         String title = journalEntry.getTitle();
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat dfmt = new SimpleDateFormat("dd-MM-YYYY HH:mm (z)");
+        dfmt.setTimeZone(c.getTimeZone());
+        String myDate = dfmt.format(date);
 
         //set the values
-        holder.entryDate.setText(date);
+        holder.entryDate.setText(myDate);
         holder.entryTitle.setText(title);
+        holder.entryCircle.setText(title.toCharArray(),0,1);
+        holder.entryCircle.setAllCaps(true);
     }
 
     @Override
@@ -93,17 +106,19 @@ public class EntryAdapter extends RecyclerView.Adapter<EntryAdapter.EntryViewHol
         // Class variables for the journal entry date and title TextViews
         TextView entryDate;
         TextView entryTitle;
+        TextView entryCircle;
 
         /**
          * Constructor for the EntryViewHolders.
          *
          * @param itemView The view inflated in onCreateViewHolder
          */
-        public EntryViewHolder(View itemView) {
+        private EntryViewHolder(View itemView) {
             super(itemView);
 
             entryDate = itemView.findViewById(R.id.TextViewDate);
             entryTitle = itemView.findViewById(R.id.TextViewTitle);
+            entryCircle = itemView.findViewById(R.id.TextViewCirle);
 
             itemView.setOnClickListener(this);
         }

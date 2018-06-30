@@ -4,6 +4,7 @@
     This includes an EditText to add a journal title, EditText to add a journal details
     and a submit button
 -->
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -14,14 +15,22 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingStart="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
-
+    <!--
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+        -->
     <TextView
         android:id="@+id/textViewItemDate"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:gravity="start"
-        android:text="21st June, 2018"/>
+        android:gravity="start"/>
 
     <!-- EditText for getting task description input -->
     <EditText
@@ -30,30 +39,30 @@
         android:layout_height="0dp"
         android:layout_weight="1.2"
         android:hint="@string/edit_entry_title"
-        android:paddingBottom ="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:inputType="textAutoComplete"/>
     <EditText
         android:id="@+id/editTextJournalBody"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="10"
-        android:textAlignment="textStart"
         android:hint="@string/edit_entry_body"
         android:paddingBottom ="@dimen/activity_horizontal_margin"
         android:inputType="textMultiLine"
-        android:minLines="6"/>
-
+        android:minLines="3"
+        android:gravity="top"/>
     <!-- A save button -->
     <Button
         android:id="@+id/saveButton"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_margin="@dimen/button_margin"
         android:text="@string/save_button"
         style="@style/TextAppearance.AppCompat.Large"
         android:textColor="@android:color/primary_text_dark"
         android:background="@color/colorPrimary"/>
-
 </LinearLayout>

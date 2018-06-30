@@ -3,40 +3,45 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
-
+    android:orientation="vertical"
+    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+    android:layout_marginStart="@dimen/activity_horizontal_margin">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingTop="24dp"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingBottom="8dp">
-        <!-- TextView that displays the date of the entry -->
+        android:paddingTop="16dp"
+        android:paddingBottom="10dp">
         <TextView
-            android:id="@+id/TextViewDate"
-            android:layout_width="wrap_content"
+            android:id="@+id/TextViewCirle"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="@drawable/circle"
+            android:text="A"
+            android:textSize="24sp"/>
+        <LinearLayout
+            android:layout_width="320dp"
             android:layout_height="wrap_content"
-            style="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@android:color/primary_text_light"
-            android:text="12-06-2018"/>
-        <!-- An empty view for spacing out the description and priority views -->
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-        <!-- TextView that displays the title of the entry -->
-        <TextView
-            android:id="@+id/TextViewTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/TextAppearance.AppCompat.Medium"
-            android:text="A sample journal item title"/>
+            android:orientation="vertical"
+            android:layout_marginStart="@dimen/activity_horizontal_margin">
+            <!-- TextView that displays the title of the journal entry -->
+            <TextView
+                android:id="@+id/TextViewTitle"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="A sample journal item title"/>
+            <!-- TextView that displays the date of the journal entry -->
+            <TextView
+                android:id="@+id/TextViewDate"
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:textColor="@color/colorPrimaryLight"
+                android:text="30-06-2018"/>
+        </LinearLayout>
     </LinearLayout>
-    <!-- A gray divider line at the bottom of each Journal Entry -->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"/>
 </LinearLayout>

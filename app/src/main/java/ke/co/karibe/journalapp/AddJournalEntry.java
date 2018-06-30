@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import ke.co.karibe.journalapp.database.AppDatabase;
 import ke.co.karibe.journalapp.database.JournalEntry;
@@ -25,8 +27,8 @@ public class AddJournalEntry extends AppCompatActivity {
 
     // Constant for default task id to be used when not in update mode
     private static final int DEFAULT_ENTRY_ID = -1;
-    // Constant for logging
-    private static final String TAG = AddJournalEntry.class.getSimpleName();
+    //date to show early
+    private static Date mDate;
     //access to the database class
     private AppDatabase mDb;
 
@@ -36,12 +38,33 @@ public class AddJournalEntry extends AppCompatActivity {
     EditText mEditBody;
     TextView mDateText;
     Button mButton;
+/*
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                // User chose the "Settings" item, show the app settings UI...
+                return true;
 
+            case R.id.action_favorite:
+                // User chose the "Favorite" action, mark the current item
+                // as a favorite...
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_journal_entry);
 
+        mDate =  Calendar.getInstance().getTime();
         initViews();
 
         mDb = AppDatabase.getInstance(getApplicationContext());
@@ -52,6 +75,7 @@ public class AddJournalEntry extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra(EXTRA_ENTRY_ID)) {
+            getSupportActionBar().setTitle(R.string.edit_entry_name);
             mButton.setText(R.string.update_button);
             if (mEntryId == DEFAULT_ENTRY_ID) {
                 //populate the UI
@@ -76,10 +100,12 @@ public class AddJournalEntry extends AppCompatActivity {
      */
     private void initViews() {
         mDateText = findViewById(R.id.textViewItemDate);
+        String date = new SimpleDateFormat("dd-MM-YYYY HH:mm (z)").format(mDate);
+        mDateText.setText(date);
         mEditTitle = findViewById(R.id.editTextJournalTitle);
         mEditBody = findViewById(R.id.editTextJournalBody);
         mButton = findViewById(R.id.saveButton);
-
+        getSupportActionBar().setTitle(R.string.add_entry_name);
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,18 +123,20 @@ public class AddJournalEntry extends AppCompatActivity {
         if (journalEntry == null) {
             return;
         }
-
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat dfmt = new SimpleDateFormat("dd-MM-YYYY HH:mm (z)");
+        dfmt.setTimeZone(c.getTimeZone());
+        String myDate = dfmt.format(journalEntry.getDate());
         mEditTitle.setText(journalEntry.getTitle());
         mEditBody.setText(journalEntry.getBody());
-        mDateText.setText(journalEntry.getDate());
+        mDateText.setText("Created: "+myDate);
     }
 
 
     public void onClickAddEntry(View view){
         String title = mEditTitle.getText().toString();
         String body = mEditBody.getText().toString();
-        String date = new SimpleDateFormat("dd-mmm-yyyy")
-                .format(Calendar.getInstance().getTime());
+
 
         if (title.length() == 0){
             return;
@@ -120,7 +148,7 @@ public class AddJournalEntry extends AppCompatActivity {
         }
 
         //create a new Journal Entry
-        final JournalEntry journalEntry = new JournalEntry(date, title, body);
+        final JournalEntry journalEntry = new JournalEntry(mDate, title, body);
 
         //insert new entry
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
