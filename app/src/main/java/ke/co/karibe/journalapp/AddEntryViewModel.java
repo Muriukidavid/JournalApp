@@ -10,11 +10,11 @@ public class AddEntryViewModel extends ViewModel {
 
     private LiveData<JournalEntry> journalEntryLiveData;
 
-    public AddEntryViewModel(AppDatabase database, int taskId) {
-        journalEntryLiveData = database.entryDao().loadEntryById(taskId);
+    public AddEntryViewModel(AppDatabase database, int entryId) {
+        journalEntryLiveData = database.entryDao().loadEntryById(entryId);
     }
 
-    // Create a getter for the task variable
+    // Create a getter for the journalEntry variable
     public LiveData<JournalEntry> getJournalEntry() {
         return journalEntryLiveData;
     }

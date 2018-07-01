@@ -12,7 +12,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import ke.co.karibe.journalapp.database.JournalEntry;
 
@@ -65,9 +64,12 @@ public class EntryAdapter extends RecyclerView.Adapter<EntryAdapter.EntryViewHol
         Date date = journalEntry.getDate();
         String title = journalEntry.getTitle();
         Calendar c = Calendar.getInstance();
-        SimpleDateFormat dfmt = new SimpleDateFormat("dd-MM-YYYY HH:mm (z)");
-        dfmt.setTimeZone(c.getTimeZone());
-        String myDate = dfmt.format(date);
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-YYYY HH:mm (z)");
+        format.setTimeZone(c.getTimeZone());
+        String myDate = "Created: "+format.format(date);
+        if (title.length()>34) {
+            title = title.substring(0,34)+"...";
+        }
 
         //set the values
         holder.entryDate.setText(myDate);

@@ -3,10 +3,11 @@
     <string name="app_name">Journal App</string>
     <string name="add_entry_name">Compose Note</string>
     <string name="edit_entry_name">Edit Note</string>
+    <string name="note_details">Details</string>
     <!-- TextView Hint strings -->
     <string name="edit_entry_title">Your Note Title</string>
     <string name="edit_entry_body">Your note details here&#8230;</string>
     <!-- Button Strings -->
+    <string name="logout_button">LOGOUT</string>
     <string name="save_button">Save</string>
-    <string name="update_button">Update</string>
 </resources>

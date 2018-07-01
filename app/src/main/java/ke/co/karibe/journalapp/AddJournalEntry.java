@@ -4,26 +4,32 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
+import java.util.TimeZone;
 
 import ke.co.karibe.journalapp.database.AppDatabase;
 import ke.co.karibe.journalapp.database.JournalEntry;
 
+
 public class AddJournalEntry extends AppCompatActivity {
     // Extra for the task ID to be received in the intent
-    public static final String EXTRA_ENTRY_ID = "extraTaskId";
+    public static final String EXTRA_ENTRY_ID = "extraEntryId";
     // Extra for the task ID to be received after rotation
-    public static final String INSTANCE_ENTRY_ID = "instanceTaskId";
+    public static final String INSTANCE_ENTRY_ID = "instanceEntryId";
 
     // Constant for default task id to be used when not in update mode
     private static final int DEFAULT_ENTRY_ID = -1;
@@ -34,38 +40,33 @@ public class AddJournalEntry extends AppCompatActivity {
 
     private int mEntryId = DEFAULT_ENTRY_ID;
 
-    EditText mEditTitle;
-    EditText mEditBody;
-    TextView mDateText;
-    Button mButton;
-/*
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                // User chose the "Settings" item, show the app settings UI...
-                return true;
+    private FloatingActionButton mLogoutFab;
 
-            case R.id.action_favorite:
-                // User chose the "Favorite" action, mark the current item
-                // as a favorite...
-                return true;
+    private EditText mEditTitle;
+    private EditText mEditBody;
+    private TextView mDateText;
 
-            default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
-
-        }
-    }
-*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_journal_entry);
 
-        mDate =  Calendar.getInstance().getTime();
-        initViews();
+        Toolbar myToolbar = findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(R.string.add_entry_name);
+
+        mDateText = findViewById(R.id.textViewItemDate);
+        mEditTitle = findViewById(R.id.editTextJournalTitle);
+        mEditBody = findViewById(R.id.editTextJournalBody);
+
+        Calendar cal = Calendar.getInstance();
+        mDate = cal.getTime();
+        TimeZone t = cal.getTimeZone();
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-YYYY HH:mm (z)");
+        format.setTimeZone(t);
+        String date = "Created: "+format.format(mDate);
+        mDateText.setText(date);
 
         mDb = AppDatabase.getInstance(getApplicationContext());
 
@@ -76,7 +77,6 @@ public class AddJournalEntry extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra(EXTRA_ENTRY_ID)) {
             getSupportActionBar().setTitle(R.string.edit_entry_name);
-            mButton.setText(R.string.update_button);
             if (mEntryId == DEFAULT_ENTRY_ID) {
                 //populate the UI
                 mEntryId = intent.getIntExtra(EXTRA_ENTRY_ID, DEFAULT_ENTRY_ID);
@@ -95,24 +95,12 @@ public class AddJournalEntry extends AppCompatActivity {
 
     }
 
-    /**    private Cursor mCursor;
-     * initViews is called from onCreate to init the member variable views
-     */
-    private void initViews() {
-        mDateText = findViewById(R.id.textViewItemDate);
-        String date = new SimpleDateFormat("dd-MM-YYYY HH:mm (z)").format(mDate);
-        mDateText.setText(date);
-        mEditTitle = findViewById(R.id.editTextJournalTitle);
-        mEditBody = findViewById(R.id.editTextJournalBody);
-        mButton = findViewById(R.id.saveButton);
-        getSupportActionBar().setTitle(R.string.add_entry_name);
-        mButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onClickAddEntry(view);
-            }
-        });
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
     }
+
 
     /**
      * populateUI would be called to populate the UI when in update mode
@@ -124,47 +112,68 @@ public class AddJournalEntry extends AppCompatActivity {
             return;
         }
         Calendar c = Calendar.getInstance();
-        SimpleDateFormat dfmt = new SimpleDateFormat("dd-MM-YYYY HH:mm (z)");
-        dfmt.setTimeZone(c.getTimeZone());
-        String myDate = dfmt.format(journalEntry.getDate());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-YYYY HH:mm (z)");
+        dateFormat.setTimeZone(c.getTimeZone());
+        String myDate = dateFormat.format(journalEntry.getDate());
         mEditTitle.setText(journalEntry.getTitle());
         mEditBody.setText(journalEntry.getBody());
         mDateText.setText("Created: "+myDate);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_save:
+                //String Date = mDateText.getText().toString();
+                String title = mEditTitle.getText().toString();
+                String body = mEditBody.getText().toString();
 
-    public void onClickAddEntry(View view){
-        String title = mEditTitle.getText().toString();
-        String body = mEditBody.getText().toString();
-
-
-        if (title.length() == 0){
-            return;
-        }
-
-        finish();
-        if (body.length() == 0) {
-            return;
-        }
-
-        //create a new Journal Entry
-        final JournalEntry journalEntry = new JournalEntry(mDate, title, body);
-
-        //insert new entry
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                if (mEntryId == DEFAULT_ENTRY_ID) {
-                    // insert new task
-                    mDb.entryDao().insertJournalEntry(journalEntry);
-                } else {
-                    //update task
-                    journalEntry.setId(mEntryId);
-                    mDb.entryDao().updateJournalEntry(journalEntry);
+               /* Calendar c = Calendar.getInstance();
+                SimpleDateFormat format = new SimpleDateFormat("dd-MM-YYYY HH:mm");
+                format.setTimeZone(c.getTimeZone());
+                Log.d("dateString",Date);
+                //Date myDate = format.parse(Date, new ParsePosition(9));
+                //Log.d("Date",myDate.toString());
+                */
+                if (title.length() == 0){
+                    return super.onOptionsItemSelected(item);
                 }
-                //return back to MainActivity
+
+                if (body.length() == 0) {
+                    return super.onOptionsItemSelected(item);
+                }
+
+                //create a new Journal Entry
+                final JournalEntry journalEntry = new JournalEntry(mDate, title, body);
+
+                //insert new entry
+                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mEntryId == DEFAULT_ENTRY_ID) {
+                            // insert new entry
+                            Log.d("AddJournalEntry","Inserting entry to DB");
+                            mDb.entryDao().insertJournalEntry(journalEntry);
+                        } else {
+                            //update entry
+                            journalEntry.setId(mEntryId);
+                            Log.d("AddJournalEntry","Updating entry to DB");
+                            mDb.entryDao().updateJournalEntry(journalEntry);
+                        }
+
+                    }
+                });
+                //return back to previous activity
                 finish();
-            }
-        });
+                return true;
+            case android.R.id.home:
+                finish();
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
     }
+
 }

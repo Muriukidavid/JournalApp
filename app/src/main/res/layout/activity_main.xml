@@ -1,28 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout
+<LinearLayout
+    android:id="@+id/mainLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".MainActivity">
-
-    <!-- RecyclerView that is responsible for holding a list of journal entries -->
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerViewEntries"
+    tools:context=".MainActivity"
+    android:orientation="vertical"
+    android:background="@drawable/gradient">
+    <android.support.v7.widget.Toolbar android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:title="@string/app_name"
+        app:titleTextColor="@android:color/white"/>
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="8dp"/>
+        android:orientation="vertical"
+        android:visibility="visible">
 
-    <!-- Floating action button that launches AddEntryActivity when clicked -->
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/addEntryFab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_input_add"
-        android:tint="@android:color/white"/>
+        <ImageView
+            android:id="@+id/ic_journal"
+            android:layout_width="240dp"
+            android:layout_height="240dp"
+            android:layout_gravity="top|center"
+            android:layout_marginTop="56dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/ic_journal"
+            android:cropToPadding="true"
+            android:scaleType="fitCenter"
+            android:visibility="visible" />
 
-</FrameLayout>
+        <com.shobhitpuri.custombuttons.GoogleSignInButton
+            android:id="@+id/sign_in_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_margin="@dimen/button_margin"
+            app:isDarkTheme="true"
+            android:text="Login With Google Account"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/parallaxImage"
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:background="@mipmap/writing"
+            android:scaleType="fitCenter"
+            android:visibility="invisible" />
+        <!-- RecyclerView that is responsible for holding a list of journal entries -->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerViewEntries"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="8dp"
+            android:visibility="invisible"
+            android:layout_marginTop="140dp"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/logoutFab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|start"
+            android:layout_marginTop="80dp"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            app:srcCompat="@android:drawable/ic_menu_revert"
+            android:tint="@android:color/white"
+            android:visibility="invisible"/>
+
+        <!-- Floating action button that launches AddEntryActivity when clicked -->
+        <!--<android.support.design.widget.FloatingActionButton
+            android:id="@+id/addEntryFab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:tint="@android:color/white"
+            android:visibility="visible"
+            app:elevation="0dp"
+            app:srcCompat="@android:drawable/ic_input_add"/>-->
+        <Button
+            android:id="@+id/button_add"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="top|end"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="80dp"
+            android:background="@android:drawable/ic_input_add"
+            android:visibility="invisible" />
+    </FrameLayout>
+</LinearLayout>
