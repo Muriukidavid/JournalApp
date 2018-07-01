@@ -10,7 +10,7 @@ This is an android journal application to help you pen down your thoughts and fe
 - View the details of a single entry
 
 ## How to get the APK
-The application file is available [here](https://github.com/Muriukidavid/JournalApp/app/build/outputs/apk/debug/app-debug.apk)
+The application file is available [here](https://github.com/Muriukidavid/JournalApp/blob/master/app/build/outputs/apk/debug/app-debug.apk)
 
 ## Supported Android Version
 The application is targetted at Android API 27, but the minimu supported API version is 21.
